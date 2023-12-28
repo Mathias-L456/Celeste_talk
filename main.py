@@ -13,10 +13,26 @@ sentence = "ceci est un gros test . mais bon c'est un peu nul . enfin je crois ?
 #sentence = input("what do you want madeline to say ? \n>>> ")
 
 def count(sen):
+    """count number of words in a sentence
+
+    Args:
+        sen (string): sentence you need to count words
+
+    Returns:
+        integer: number of words
+    """
     words = sen.split() ## permet de separer les mots
     return len(words)
 
 def analyse(texte):
+    """split and count the number of sentence and add it to a tab named taille
+
+    Args:
+        texte (string): your sentences
+
+    Returns:
+        list of int: the number of words of each sentence in the order
+    """
     sen_tab = re.split(r'[.!?]', texte) ## on detecte les phrases (sen = sentence)
     sen_tab = [sen.strip() for sen in sen_tab if sen.strip()] ## on applique sen.strip pour chacune des phrases dans le tableau si sen.strip n'est pas vide
     taille = [count(i) for i in sen_tab] ## on ajoute le nombre de mot dans chacune de phrase
@@ -27,6 +43,15 @@ lenght = analyse(sentence)
 print(lenght)
 
 def create_sound_random(mood, lenght):
+    """create random segment talking sound from celeste
+
+    Args:
+        mood (int): index of the mood in tab_per and tab_mid
+        lenght (int): the number of words of the sentence
+
+    Returns:
+        pydub audioSegment: a concatenate audio file of each segment
+    """
     sound = AudioSegment.from_mp3("Madeline/silence.mp3")
     last_rand = 0
 
@@ -56,6 +81,15 @@ def create_sound_random(mood, lenght):
     return sound
 
 def create_sentence(mood, lenght):
+    """concatenate all the sentences (based on the size of lenght) to have a big one
+
+    Args:
+        mood (int): index index of the mood in tab_per and tab_mid
+        lenght (list of int): the number of words of each sentence in the order
+
+    Returns:
+        pydub audioSegment: _description_
+    """
     final_sound = AudioSegment.from_mp3("Madeline/silence.mp3")
 
     for i in range(0,len(lenght)): ## on créé autant de phrase que de phrase mis en entrée
