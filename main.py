@@ -1,18 +1,33 @@
 from pydub import AudioSegment
 from pydub.playback import play
 from random import randint
-
+import re
 
 tab_Per = ["Upset_Per_", "Surprised_Per_", "Sadder_Per_", "Sad_Per_", "Panic_Per_", "Normal_Per_","Distracted_Per_", "Determined_Per_","Deadpan_Per_", "Angry_Per_"]
 tab_Mid = ["Upset_Mid_", "Surprised_Mid_", "Sadder_Mid_", "Sad_Mid_", "Panic_Mid_", "Normal_Mid_","Distracted_Mid_", "Determined_Mid_","Deadpan_Mid_" , "Angry_Mid_"]
 
 
 mood = 5 ## indice du mood dans le tab
-lenght = 20 ## nombre de puit puit qu'on veux
+##lenght = 5 ## nombre de puit puit qu'on veux
+sentence = "ceci est un gros test . mais bon c'est un peu nul . enfin je crois ?"
+#sentence = input("what do you want madeline to say ? \n>>> ")
 
-def create_sound(mood, lenght):
-    final_sound = AudioSegment.from_mp3("Madeline/silence.mp3")
-    temp_sound = ""
+def count(sen):
+    words = sen.split() ## permet de separer les mots
+    return len(words)
+
+def analyse(texte):
+    sen_tab = re.split(r'[.!?]', texte) ## on detecte les phrases (sen = sentence)
+    sen_tab = [sen.strip() for sen in sen_tab if sen.strip()] ## on applique sen.strip pour chacune des phrases dans le tableau si sen.strip n'est pas vide
+    taille = [count(i) for i in sen_tab] ## on ajoute le nombre de mot dans chacune de phrase
+    print(sen_tab) ## si je print pas j'ai des erreurs ¯\_(ツ)_/¯
+    return taille
+
+lenght = analyse(sentence)
+print(lenght)
+
+def create_sound_random(mood, lenght):
+    sound = AudioSegment.from_mp3("Madeline/silence.mp3")
     last_rand = 0
 
     for i in range(0,lenght):
@@ -23,24 +38,33 @@ def create_sound(mood, lenght):
             rand_let = randint(1,4)
 
         if rand_let == 1: ## A
-            final_sound += AudioSegment.from_mp3(("Madeline/" + tab_Mid[mood] + "A_" + rand_num_f + ".mp3")) + AudioSegment.from_mp3("Madeline/silence.mp3") ## fichier silence.mp3 qui dure 0.02sec
+            sound += AudioSegment.from_mp3(("Madeline/" + tab_Mid[mood] + "A_" + rand_num_f + ".mp3")) + AudioSegment.from_mp3("Madeline/silence.mp3") ## fichier silence.mp3 qui dure 0.02sec
 
         elif rand_let == 2: ## B
-            final_sound += AudioSegment.from_mp3(("Madeline/" + tab_Mid[mood] + "B_" + rand_num_f + ".mp3")) + AudioSegment.from_mp3("Madeline/silence.mp3")
+            sound += AudioSegment.from_mp3(("Madeline/" + tab_Mid[mood] + "B_" + rand_num_f + ".mp3")) + AudioSegment.from_mp3("Madeline/silence.mp3")
 
         elif rand_let == 3: ## Pre
-            final_sound += AudioSegment.from_mp3(("Madeline/" + tab_Per[mood] + rand_num_f + ".mp3"))
+            sound += AudioSegment.from_mp3(("Madeline/" + tab_Per[mood] + rand_num_f + ".mp3"))
 
         elif rand_let == 4: ## C
-            final_sound += AudioSegment.from_mp3(("Madeline/" + tab_Mid[mood] + "C_" + rand_num_f + ".mp3"))
+            sound += AudioSegment.from_mp3(("Madeline/" + tab_Mid[mood] + "C_" + rand_num_f + ".mp3"))
 
         last_rand = rand_let ## anti doublon
 
-    temp_sound = ("Madeline/" + tab_Mid[mood] + "C_" + rand_num_f + ".mp3") ## fin de phrase
-    final_sound += AudioSegment.from_mp3(temp_sound)
+    
+    sound += AudioSegment.from_mp3(("Madeline/" + tab_Mid[mood] + "C_" + rand_num_f + ".mp3")) ## fin de phrase
+    return sound
+
+def create_sentence(mood, lenght):
+    final_sound = AudioSegment.from_mp3("Madeline/silence.mp3")
+
+    for i in range(0,len(lenght)): ## on créé autant de phrase que de phrase mis en entrée
+        final_sound += create_sound_random(mood, lenght[i]) ## on créé autant de puit puit que de nombre de mot dans chacune des phrases
+        final_sound += AudioSegment.from_mp3("Madeline/big_silence.mp3") ## permet de mettre une coupure entre les phrases
+
     return final_sound
 
-play(create_sound(mood, lenght))
+play(create_sentence(mood,lenght))
 
 
         
