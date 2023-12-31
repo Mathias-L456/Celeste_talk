@@ -3,6 +3,9 @@ from pydub.playback import play
 from random import randint
 import re
 
+import audio_effects as ae
+from pydub.playback import _play_with_simpleaudio as play_sound
+
 tab_Per = ["Upset_Per_", "Surprised_Per_", "Sadder_Per_", "Sad_Per_", "Panic_Per_", "Normal_Per_","Distracted_Per_", "Determined_Per_","Deadpan_Per_", "Angry_Per_"]
 tab_Mid = ["Upset_Mid_", "Surprised_Mid_", "Sadder_Mid_", "Sad_Mid_", "Panic_Mid_", "Normal_Mid_","Distracted_Mid_", "Determined_Mid_","Deadpan_Mid_" , "Angry_Mid_"]
 
@@ -98,7 +101,11 @@ def create_sentence(mood, lenght):
 
     return final_sound
 
-play(create_sentence(mood,lenght))
+##play(create_sentence(5,lenght))
+
+##current_audio_slow_down = ae.speed_down(create_sentence(mood,lenght), 0.85)
+##play_sound(current_audio_slow_down)
+##play(current_audio_slow_down)
 
 
         
