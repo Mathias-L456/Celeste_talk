@@ -101,7 +101,7 @@ def create_sentence(mood, lenght):
 
     return final_sound
 
-##play(create_sentence(5,lenght))
+play(create_sentence(5,lenght))
 
 ##current_audio_slow_down = ae.speed_down(create_sentence(mood,lenght), 0.85)
 ##play_sound(current_audio_slow_down)
