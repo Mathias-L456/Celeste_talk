@@ -56,6 +56,7 @@ def create_sound_random(mood, lenght):
         pydub audioSegment: a concatenate audio file of each segment
     """
     sound = AudioSegment.from_mp3("Madeline/silence.mp3")
+
     last_rand = 0
 
     for i in range(0,lenght):
@@ -101,7 +102,7 @@ def create_sentence(mood, lenght):
 
     return final_sound
 
-##play(create_sentence(5,lenght))
+play(create_sentence(5,lenght))
 
 ##current_audio_slow_down = ae.speed_down(create_sentence(mood,lenght), 0.85)
 ##play_sound(current_audio_slow_down)
